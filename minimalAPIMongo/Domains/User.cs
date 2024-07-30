@@ -6,6 +6,7 @@ namespace minimalAPIMongo.Domains
     public class User
     {
         [BsonElement("_id"), BsonRepresentation(BsonType.ObjectId)]
+        [BsonIgnoreIfDefault]
         public string? Id { get; set; }
 
         [BsonElement("name")]

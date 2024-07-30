@@ -12,10 +12,12 @@ namespace minimalAPIMongo.Controllers
     public class ClientController : ControllerBase
     {
         private readonly IMongoCollection<Client> _client;
+        private readonly IMongoCollection<User> _users;
 
         public ClientController(MongoDbService mongoDbService)
         {
             _client = mongoDbService.GetDatabase.GetCollection<Client>("client");
+            _users = mongoDbService.GetDatabase.GetCollection<User>("user");
         }
 
         [HttpGet]
@@ -24,6 +26,11 @@ namespace minimalAPIMongo.Controllers
             try
             {
                 var clients = await _client.Find(FilterDefinition<Client>.Empty).ToListAsync();
+
+                foreach (var client in clients)
+                {
+                    client.User = await _users.Find(_ => true).FirstOrDefaultAsync();
+                }
 
                 return Ok(clients);
             }
@@ -74,6 +81,8 @@ namespace minimalAPIMongo.Controllers
             try
             {
                 var client = await _client.Find(x => x.Id == id).FirstOrDefaultAsync();
+                client.User = await _users.Find(x => x.Id == client.UserId).FirstOrDefaultAsync();
+
                 return client is not null ? Ok(client) : BadRequest();
             }
             catch (Exception)

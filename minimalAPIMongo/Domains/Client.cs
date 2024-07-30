@@ -8,10 +8,14 @@ namespace minimalAPIMongo.Domains
         [BsonId]
 
         [BsonElement("_id"), BsonRepresentation(BsonType.ObjectId)]
+        [BsonIgnoreIfDefault]
         public string? Id { get; set; }
 
         [BsonElement("UserId")]
         public string? UserId { get; set; }
+
+        [BsonIgnoreIfDefault]
+        public User? User { get; set; }
 
         [BsonElement("Cpf")]
         public double? Cpf { get; set; }

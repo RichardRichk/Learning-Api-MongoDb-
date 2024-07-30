@@ -9,7 +9,8 @@ namespace minimalAPIMongo.Domains
         [BsonId] 
 
         //Define o nome do campo MongoDb como "_id" e o tipo como "ObjectId"
-        [BsonElement("_id"), BsonRepresentation(BsonType.ObjectId)] 
+        [BsonElement("_id"), BsonRepresentation(BsonType.ObjectId)]
+        [BsonIgnoreIfDefault]
         public string? Id { get; set; }
 
         [BsonElement("name")]
